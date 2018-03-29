@@ -42,6 +42,6 @@ class CrudRouteMiddleware implements MiddlewareInterface
             $options['form'] = $form;
         }
 
-        return $handler->process($request->withAttribute(self::CRUD_CONFIG, $options));
+        return $handler->handle($request->withAttribute(self::CRUD_CONFIG, $options));
     }
 }
