@@ -5,11 +5,12 @@ namespace Crud\Handler;
 use Crud\Middleware\CrudRouteMiddleware;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Expressive\Router\RouterInterface;
 use Zend\Expressive\Template\TemplateRendererInterface;
 use Psr\Http\Message\ResponseInterface;
 
-abstract class AbstractCrudHandler
+abstract class AbstractCrudHandler implements RequestHandlerInterface
 {
     protected $templateRenderer;
 
@@ -41,7 +42,7 @@ abstract class AbstractCrudHandler
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request) : ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $this->init($request);
 
