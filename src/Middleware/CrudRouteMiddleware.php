@@ -2,12 +2,13 @@
 
 namespace Crud\Middleware;
 
-use Crud\Form\CrudFormInterface;
 use Interop\Container\ContainerInterface;
 use Interop\Http\ServerMiddleware\DelegateInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Expressive\Router\RouteResult;
-use Interop\Http\ServerMiddleware\MiddlewareInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Message\ResponseInterface;
 
 class CrudRouteMiddleware implements MiddlewareInterface
 {
@@ -32,7 +33,7 @@ class CrudRouteMiddleware implements MiddlewareInterface
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function process(ServerRequestInterface $request, DelegateInterface $delegate)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
     {
         $options = $request->getAttribute(RouteResult::class)->getMatchedRoute()->getOptions();
 
@@ -41,6 +42,6 @@ class CrudRouteMiddleware implements MiddlewareInterface
             $options['form'] = $form;
         }
 
-        return $delegate->process($request->withAttribute(self::CRUD_CONFIG, $options));
+        return $handler->process($request->withAttribute(self::CRUD_CONFIG, $options));
     }
 }
