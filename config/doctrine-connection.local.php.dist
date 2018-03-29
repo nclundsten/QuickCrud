@@ -1,0 +1,21 @@
+<?php
+$user = "changeme";
+$pass = "changeme";
+$host = "localhost";
+$db   = "changeme";
+return [
+    'doctrine' => [
+        'connection' => [
+            'orm_default' => [
+                'params' => [
+                    'url' => "mysql://$user:$pass@$host/$db",
+                ],
+            ],
+        ],
+        'driver' => [
+            'orm_default' => [
+                'class' => \Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain::class,
+            ],
+        ],
+    ],
+];

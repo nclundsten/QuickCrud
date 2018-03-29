@@ -19,5 +19,10 @@
     "psr-4": {
       "Crud\\": "src/"
     }
+  },
+  "extra": {
+    "zf": {
+      "config-provider": "Crud\\ConfigProvider"
+    }
   }
 }
