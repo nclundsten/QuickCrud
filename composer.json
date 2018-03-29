@@ -1,6 +1,6 @@
 {
   "name": "nlundsten/expressive-doctrine-crud",
-  "minimum-stability" : "dev",
+  "minimum-stability" : "stable",
   "require": {
     "php": "^7.0",
     "dasprid/container-interop-doctrine": "^1.1",
