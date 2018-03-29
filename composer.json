@@ -1,0 +1,43 @@
+{
+  "name": "nlundsten/expressive-doctrine-crud",
+  "description": "drop in crud module for expressive that uses doctrine",
+  "type": "project",
+  "homepage": "https://github.com/nlundsten",
+  "license": "BSD-3-Clause",
+  "config": {
+    "sort-packages": true
+  },
+  "minimum-stability" : "dev",
+  "require": {
+    "php": "^7.0",
+    "dasprid/container-interop-doctrine": "^1.1",
+    "http-interop/http-middleware": "^0.4.1",
+    "roave/security-advisories": "dev-master",
+    "zendframework/zend-component-installer": "^1.0",
+    "zendframework/zend-config-aggregator": "^1.0",
+    "zendframework/zend-expressive": "^2.0.5",
+    "zendframework/zend-expressive-csrf": "^0.1.1",
+    "zendframework/zend-expressive-helpers": "^4.0",
+    "zendframework/zend-expressive-session": "^0.1.0",
+    "zendframework/zend-expressive-session-ext": "^0.1.3",
+    "zendframework/zend-expressive-zendrouter": "^2.0.1",
+    "zendframework/zend-expressive-zendviewrenderer": "^1.4",
+    "zendframework/zend-form": "^2.11",
+    "zendframework/zend-i18n": "^2.7",
+    "zendframework/zend-math": "^3.0",
+    "zendframework/zend-servicemanager": "^3.3",
+    "zendframework/zend-stdlib": "^3.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^6.0.8 || ^5.7.15",
+    "squizlabs/php_codesniffer": "^2.8.1",
+    "zfcampus/zf-development-mode": "^3.1",
+    "zendframework/zend-expressive-tooling": "^0.4.1",
+    "filp/whoops": "^2.1.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "Crud\\": "src/",
+    }
+  }
+}

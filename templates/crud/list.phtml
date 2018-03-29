@@ -1,0 +1,31 @@
+<style>
+    table td {
+        padding:10px;
+        border:1px solid #999999;
+    }
+    table {
+        border-collapse: collapse;
+        border: 1px solid #2d303a;
+    }
+
+</style>
+<a href="<?php echo $this->newUrl; ?>"> New </a>
+
+<table>
+
+<?php foreach ($this->entities as $entity) : ?>
+    <tr>
+    <td>
+        <?php echo '<a href="' . $this->url($this->editRoute, ['id' => $entity->getId()]) . '">edit</a>'; ?>
+    </td>
+    <td>
+    <?php echo '<a href="' . $this->url($this->deleteRoute, ['id' => $entity->getId()]) . '">delete</a>'; ?>
+    </td>
+        <?php foreach ($entity->getArrayCopy() as $k => $v) : ?>
+            <td>
+                <?php echo $v ?>
+            </td>
+        <?php endforeach; ?>
+    </tr>
+<?php endforeach; ?>
+</table>

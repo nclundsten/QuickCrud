@@ -1,0 +1,7 @@
+<?php echo $this->form()->openTag($this->form); ?>
+<?php foreach ($this->form->getElements() as $element) : ?>
+    <div>
+        <?php echo $this->formRow($element); ?>
+    </div>
+<?php endforeach; ?>
+<?php echo $this->form()->closeTag(); ?>
