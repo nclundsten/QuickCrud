@@ -36,8 +36,8 @@ class CrudRouteMiddleware implements MiddlewareInterface
     {
         $options = $request->getAttribute(RouteResult::class)->getMatchedRoute()->getOptions();
 
-        if (array_key_exists(CrudFormInterface::class, $options)) {
-            $form = $this->container->get($options[CrudFormInterface::class]);
+        if (array_key_exists('form', $options)) {
+            $form = $this->container->get($options['form']);
             $options['form'] = $form;
         }
 
