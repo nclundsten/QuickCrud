@@ -12,20 +12,28 @@ use Psr\Http\Message\ResponseInterface;
 
 abstract class AbstractCrudHandler implements RequestHandlerInterface
 {
+    /* @var TemplateRendererInterface */
     protected $templateRenderer;
 
+    /* @var RouterInterface */
     protected $router;
 
+    /* @var string */
     protected $entityName;
 
+    /* @var EntityManagerInterface */
     protected $entityManager;
 
+    /* @var string */
     protected $routePrefix;
 
+    /* @var string */
     protected $templateName;
 
+    /* @var array */
     protected $identifier;
 
+    /* @var ServerRequestInterface */
     protected $request;
 
     public function __construct(
@@ -46,12 +54,12 @@ abstract class AbstractCrudHandler implements RequestHandlerInterface
     {
         $this->init($request);
 
-        if ($request->getMethod() === 'POST') {
-            return $this->handlePost($request);
+        if ($request->getMethod() === 'GET') {
+            return $this->handleGet();
         }
-
-        return $this->handleGet($request);
     }
+
+    protected function handleGet(){}
 
     /**
      * @param ServerRequestInterface $request
@@ -74,18 +82,31 @@ abstract class AbstractCrudHandler implements RequestHandlerInterface
     }
 
     /**
+     * @return object
+     * @throws \Exception
+     */
+    protected function findEntityFromRequest()
+    {
+        $entity = $this->entityManager->find($this->entityName, self::idFromRequest());
+        if (! $entity) {
+            throw new \Exception('entity not found');
+        }
+        return $entity;
+    }
+
+    /**
      * @param ServerRequestInterface $request
      * @return array
      * @throws \Exception
      */
-    protected function idFromRequest(ServerRequestInterface $request) : array
+    protected function idFromRequest() : array
     {
         $identifier = $this->identifier;
         if (! is_array($identifier)) {
             throw new \Exception('expected identifier as array');
         }
         foreach ($identifier as $key => $requestAttribute) {
-            $identifier[$key] = $request->getAttribute($requestAttribute);
+            $identifier[$key] = $this->request->getAttribute($requestAttribute);
         }
         return $identifier;
     }

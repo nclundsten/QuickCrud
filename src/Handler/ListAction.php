@@ -3,15 +3,14 @@
 namespace Crud\Handler;
 
 use Zend\Diactoros\Response\HtmlResponse;
-use Psr\Http\Message\ServerRequestInterface as Request;
 
 class ListAction extends AbstractCrudHandler
 {
     protected $templateName = "crud::list";
 
-    public function handleGet(Request $request) : HtmlResponse
+    public function handleGet() : HtmlResponse
     {
-        $params = $request->getQueryParams();
+        $params = $this->request->getQueryParams();
         $limit = isset($params['limit']) ? $params['limit'] : 10;
         $page = isset($params['page']) ? $params['page'] : 1;
         $offset = isset($params['offset']) ? $params['offset'] : $limit * $page - $limit;

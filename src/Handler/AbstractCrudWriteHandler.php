@@ -7,16 +7,52 @@ use Crud\Middleware\CrudRouteMiddleware;
 use Zend\Expressive\Csrf\CsrfMiddleware;
 use Zend\Form\FormInterface;
 use Zend\Form\Element;
+use Psr\Http\Message\ResponseInterface;
 
 class AbstractCrudWriteHandler extends AbstractCrudHandler
 {
-    protected $form;
+    private $form;
+
+    /**
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function handle(ServerRequestInterface $request): ResponseInterface
+    {
+        if ($request->getMethod() === 'POST') {
+            $this->init($request);
+            return $this->handlePost();
+        }
+        return parent::handle($request);
+    }
+
+    protected function handlePost(){}
 
     protected function init(ServerRequestInterface $request)
     {
         parent::init($request);
         $config = $request->getAttribute(CrudRouteMiddleware::CRUD_CONFIG);
         $this->form = $config['form'];
+    }
+
+    /**
+     * @param object|null $entity
+     * @param string $action
+     * @param string $method
+     * @return mixed
+     * @throws \Exception
+     */
+    protected function getForm(object $entity = null, $action='', $method="POST")
+    {
+        $form = $this->form;
+        if (null === $entity) {
+            $entity = self::findEntityFromRequest();
+        }
+
+        $form->bind($entity);
+        static::decorateFormWithCsrf($form, self::generateCsrfToken(), $action, $method);
+
+        return $form;
     }
 
     public static function decorateFormWithCsrf(FormInterface $form, $csrfToken, $action='', $method="POST")
@@ -33,10 +69,13 @@ class AbstractCrudWriteHandler extends AbstractCrudHandler
         $submit->setValue('Submit');
     }
 
-    public static function validateCsrfToken(ServerRequestInterface $request)
+    /**
+     * @return bool
+     */
+    public function validateCsrfToken()
     {
-        $guard = $request->getAttribute(CsrfMiddleware::GUARD_ATTRIBUTE);
-        $data = $request->getParsedBody();
+        $guard = $this->request->getAttribute(CsrfMiddleware::GUARD_ATTRIBUTE);
+        $data = $this->request->getParsedBody();
         $token = $data['__csrf'] ?? '';
         if (!$guard->validateToken($token)) {
             return false;
@@ -44,8 +83,8 @@ class AbstractCrudWriteHandler extends AbstractCrudHandler
         return true;
     }
 
-    public static function generateCsrfToken(ServerRequestInterface $request)
+    public function generateCsrfToken()
     {
-        return $request->getAttribute(CsrfMiddleware::GUARD_ATTRIBUTE)->generateToken();
+        return $this->request->getAttribute(CsrfMiddleware::GUARD_ATTRIBUTE)->generateToken();
     }
 }

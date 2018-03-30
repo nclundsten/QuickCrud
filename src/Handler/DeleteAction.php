@@ -2,51 +2,55 @@
 
 namespace Crud\Handler;
 
+use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\RedirectResponse;
-use Psr\Http\Message\ServerRequestInterface as Request;
 use Zend\Diactoros\Response\EmptyResponse;
 
 class DeleteAction extends AbstractCrudWriteHandler
 {
     protected $templateName = "crud::delete";
 
-    protected function handleGet(Request $request)
+    /**
+     * @return ResponseInterface
+     * @throws \Exception
+     */
+    protected function handleGet() : ResponseInterface
     {
-        $entity = $this->entityManager->find($this->entityName, self::idFromRequest($request));
-        $this->form->bind($entity);
-        self::decorateFormWithCsrf(
-            $this->form,
-            self::generateCsrfToken($request)
+        return new HtmlResponse(
+            $this->templateRenderer->render(
+                $this->templateName,
+                [
+                    'form' => self::getForm(),
+                ]
+            )
         );
-        $vars = [
-            'form' => $this->form,
-            'entity' => $entity,
-        ];
-        return new HtmlResponse($this->templateRenderer->render($this->templateName, $vars));
     }
 
-    protected function handlePost(Request $request)
+    /**
+     * @return ResponseInterface
+     * @throws \Exception
+     */
+    protected function handlePost() : ResponseInterface
     {
-        if (! self::validateCsrfToken($request)) {
+        if (! self::validateCsrfToken()) {
             return new EmptyResponse();
         }
 
-        $entity = $this->entityManager->find($this->entityName, self::idFromRequest($request));
-        $this->form->bind($entity);
-        if (! $this->form->isValid()) {
-            self::decorateFormWithCsrf(
-                $this->form,
-                self::generateCsrfToken($request)
-            );
-            $vars = [
-                'form' => $this->form,
-                'entity' => $entity,
-            ];
-            return new HtmlResponse($this->templateRenderer->render($this->templateName, $vars));
+        $form = self::getForm();
+        if ($form->isValid()) {
+            $this->entityManager->remove($form->getData());
+            $this->entityManager->flush();
+            return new RedirectResponse($this->router->generateUri($this->routePrefix . '.list'));
         }
-        $this->entityManager->remove($this->form->getData());
-        $this->entityManager->flush();
-        return new RedirectResponse($this->router->generateUri($this->routePrefix . '.list'));
+
+        return new HtmlResponse(
+            $this->templateRenderer->render(
+                $this->templateName,
+                [
+                    'form' => $form,
+                ]
+            )
+        );
     }
 }

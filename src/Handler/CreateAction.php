@@ -5,7 +5,6 @@ namespace Crud\Handler;
 use Zend\Diactoros\Response\EmptyResponse;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\RedirectResponse;
-use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface;
 
 class CreateAction extends AbstractCrudWriteHandler
@@ -13,39 +12,31 @@ class CreateAction extends AbstractCrudWriteHandler
     protected $templateName = 'crud::create';
 
     /**
-     * @param Request $request
      * @return HtmlResponse
+     * @throws \Exception
      */
-    protected function handleGet(Request $request) : HtmlResponse
+    protected function handleGet() : HtmlResponse
     {
-        $this->form->bind(new $this->entityName);
-        static::decorateFormWithCsrf(
-            $this->form,
-            static::generateCsrfToken($request)
-        );
-        return new HtmlResponse($this->templateRenderer->render($this->templateName, ['form' => $this->form]));
+        $form = self::getForm(new $this->entityName);
+        return new HtmlResponse($this->templateRenderer->render($this->templateName, ['form' => $form]));
     }
 
     /**
-     * @param Request $request
      * @return ResponseInterface
+     * @throws \Exception
      */
-    protected function handlePost(Request $request) : ResponseInterface
+    protected function handlePost() : ResponseInterface
     {
-        if (! static::validateCsrfToken($request)) {
+        if (! static::validateCsrfToken()) {
             return new EmptyResponse();
         }
 
-        $this->form->bind(new $this->entityName);
-        static::decorateFormWithCsrf(
-            $this->form,
-            static::generateCsrfToken($request)
-        );
-        $this->form->setData($request->getParsedBody());
-        if (! $this->form->isValid()) {
-            return new HtmlResponse($this->templateRenderer->render($this->templateName, ['form' => $this->form]));
+        $form = self::getForm(new $this->entityName);
+        $form->setData($this->request->getParsedBody());
+        if (! $form->isValid()) {
+            return new HtmlResponse($this->templateRenderer->render($this->templateName, ['form' => $form]));
         }
-        $this->entityManager->persist($this->form->getData());
+        $this->entityManager->persist($form->getData());
         $this->entityManager->flush();
         return new RedirectResponse($this->router->generateUri($this->routePrefix . '.list'));
     }
