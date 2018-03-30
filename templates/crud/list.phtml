@@ -16,7 +16,7 @@
 <?php foreach ($this->entities as $entity) : ?>
     <tr>
     <td>
-        <?php echo '<a href="' . $this->url($this->viewRoute, ['id' => $entity->getId()]) . '">delete</a>'; ?>
+        <?php echo '<a href="' . $this->url($this->readRoute, ['id' => $entity->getId()]) . '">read</a>'; ?>
     </td>
         <?php foreach ($entity->getArrayCopy() as $k => $v) : ?>
             <td>
