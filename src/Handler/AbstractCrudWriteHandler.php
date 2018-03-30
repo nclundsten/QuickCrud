@@ -42,7 +42,7 @@ class AbstractCrudWriteHandler extends AbstractCrudHandler
      * @return mixed
      * @throws \Exception
      */
-    protected function getForm(object $entity = null, $action='', $method="POST")
+    protected function getForm($entity = null, $action='', $method="POST")
     {
         $form = $this->form;
         if (null === $entity) {
