@@ -23,12 +23,12 @@
                 <?php echo $v ?>
             </td>
         <?php endforeach; ?>
-    </tr>
     <td>
         <?php echo '<a href="' . $this->url($this->editRoute, ['id' => $entity->getId()]) . '">edit</a>'; ?>
     </td>
     <td>
         <?php echo '<a href="' . $this->url($this->deleteRoute, ['id' => $entity->getId()]) . '">delete</a>'; ?>
     </td>
+    </tr>
 <?php endforeach; ?>
 </table>
