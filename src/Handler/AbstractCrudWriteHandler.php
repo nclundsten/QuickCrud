@@ -42,7 +42,7 @@ class AbstractCrudWriteHandler extends AbstractCrudHandler
      * @return mixed
      * @throws \Exception
      */
-    protected function getForm($entity = null, $action='', $method="POST")
+    protected function getForm($entity = null, array $data = null, $action='', $method="POST")
     {
         $form = $this->form;
         if (null === $entity) {
@@ -51,6 +51,10 @@ class AbstractCrudWriteHandler extends AbstractCrudHandler
 
         $form->bind($entity);
         static::decorateFormWithCsrf($form, self::generateCsrfToken(), $action, $method);
+
+        if (is_array($data)) {
+            $form->setData($data);
+        }
 
         return $form;
     }

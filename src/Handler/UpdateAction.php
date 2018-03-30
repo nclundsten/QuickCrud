@@ -37,8 +37,7 @@ class UpdateAction extends AbstractCrudWriteHandler
             return new EmptyResponse();
         }
 
-        $form = self::getForm();
-        $form->setData($this->request->getParsedBody());
+        $form = self::getForm(null, $this->request->getParsedBody());
         if ($form->isValid()) {
             $this->entityManager->persist($form->getData());
             $this->entityManager->flush();

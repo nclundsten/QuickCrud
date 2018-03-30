@@ -31,8 +31,7 @@ class CreateAction extends AbstractCrudWriteHandler
             return new EmptyResponse();
         }
 
-        $form = self::getForm(new $this->entityName);
-        $form->setData($this->request->getParsedBody());
+        $form = self::getForm(new $this->entityName, $this->request->getParsedBody());
         if (! $form->isValid()) {
             return new HtmlResponse($this->templateRenderer->render($this->templateName, ['form' => $form]));
         }
