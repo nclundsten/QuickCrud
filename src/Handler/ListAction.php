@@ -24,6 +24,7 @@ class ListAction extends AbstractCrudHandler
         $data = [
             'entities' => $entities,
             'editRoute' => $this->routePrefix . '.update',
+            'viewRoute' => $this->routePrefix . '.view',
             'newUrl' => $this->router->generateUri($this->routePrefix . '.create'),
             'deleteRoute' => $this->routePrefix . '.delete',
             'limit' => $limit,

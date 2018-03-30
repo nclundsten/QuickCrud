@@ -16,10 +16,7 @@
 <?php foreach ($this->entities as $entity) : ?>
     <tr>
     <td>
-        <?php echo '<a href="' . $this->url($this->editRoute, ['id' => $entity->getId()]) . '">edit</a>'; ?>
-    </td>
-    <td>
-    <?php echo '<a href="' . $this->url($this->deleteRoute, ['id' => $entity->getId()]) . '">delete</a>'; ?>
+        <?php echo '<a href="' . $this->url($this->viewRoute, ['id' => $entity->getId()]) . '">delete</a>'; ?>
     </td>
         <?php foreach ($entity->getArrayCopy() as $k => $v) : ?>
             <td>
@@ -27,5 +24,11 @@
             </td>
         <?php endforeach; ?>
     </tr>
+    <td>
+        <?php echo '<a href="' . $this->url($this->editRoute, ['id' => $entity->getId()]) . '">edit</a>'; ?>
+    </td>
+    <td>
+        <?php echo '<a href="' . $this->url($this->deleteRoute, ['id' => $entity->getId()]) . '">delete</a>'; ?>
+    </td>
 <?php endforeach; ?>
 </table>
