@@ -12,6 +12,15 @@
 <a href="<?php echo $this->newUrl; ?>"> New </a>
 
 <table>
+    <?php $heading = end($entities); ?>
+    <tr>
+        <th>view</th>
+    <?php foreach ($heading->getArrayCopy() as $k => $v) : ?>
+        <th><?php echo ($k); ?></th>
+    <?php endforeach; ?>
+        <th>edit</th>
+        <th>delete</th>
+    </tr>
 
 <?php foreach ($this->entities as $entity) : ?>
     <tr>
