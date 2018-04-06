@@ -26,9 +26,6 @@ abstract class AbstractCrudHandler implements RequestHandlerInterface
     protected $entityManager;
 
     /* @var string */
-    protected $routePrefix;
-
-    /* @var string */
     protected $templateName;
 
     /* @var array */
@@ -75,7 +72,6 @@ abstract class AbstractCrudHandler implements RequestHandlerInterface
         $config = $request->getAttribute(CrudRouteMiddleware::CRUD_CONFIG);
 
         $this->entityName = $config['entityName'];
-        $this->routePrefix = $config['routePrefix'];
 
         $this->templateName = isset($config['templateName'])
             ? $config['templateName']
