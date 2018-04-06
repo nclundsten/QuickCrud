@@ -41,7 +41,7 @@ class CreateHandler extends AbstractCrudWriteHandler
         if ($form->isValid()) {
             $this->entityManager->persist($form->getData());
             $this->entityManager->flush();
-            return new RedirectResponse($this->router->generateUri($this->successRoute));
+            return new RedirectResponse($this->router->generateUri($this->routes['success']));
         }
 
         return new HtmlResponse(

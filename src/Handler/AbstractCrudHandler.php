@@ -37,6 +37,9 @@ abstract class AbstractCrudHandler implements RequestHandlerInterface
     /* @var ServerRequestInterface */
     protected $request;
 
+    /* @var array */
+    protected $routes;
+
     public function __construct(
         TemplateRendererInterface $templateRenderer,
         RouterInterface $router,
@@ -81,6 +84,10 @@ abstract class AbstractCrudHandler implements RequestHandlerInterface
         $this->identifier = isset($config['identifier'])
             ? $config['identifier']
             : null;
+
+        $this->routes = isset($config['routes'])
+            ? $config['routes']
+            : [];
     }
 
     /**

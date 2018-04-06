@@ -13,7 +13,6 @@ abstract class AbstractCrudWriteHandler extends AbstractCrudHandler
 {
     /* @var FormInterface */
     private $form;
-    protected $successRoute;
 
     /**
      * @param ServerRequestInterface $request
@@ -35,7 +34,6 @@ abstract class AbstractCrudWriteHandler extends AbstractCrudHandler
         parent::init($request);
         $config = $request->getAttribute(CrudRouteMiddleware::CRUD_CONFIG);
         $this->form = $config['form'];
-        $this->successRoute = $config['successRoute'];
     }
 
     /**
