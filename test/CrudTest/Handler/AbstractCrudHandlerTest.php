@@ -29,8 +29,8 @@ class AbstractCrudHandlerTest extends TestCase
 
         $this->config = [
             'entityName' => uniqid('EntityName'),
-            'routePrefix' => uniqid('routeprefix'),
             'templateName' => uniqid('some::template'),
+            'routes' => ['success' => uniqid('some.route')],
             'identifier' => ['id1' => 'id1', 'id2' => 'id2'],
         ];
         $this->requestAttributes[CrudRouteMiddleware::CRUD_CONFIG] = $this->config;
@@ -58,8 +58,8 @@ class AbstractCrudHandlerTest extends TestCase
             $handlerProps['entityName']
         );
         $this->assertSame(
-            $this->config['routePrefix'],
-            $handlerProps['routePrefix']
+            $this->config['routes'],
+            $handlerProps['routes']
         );
         $this->assertSame(
             $this->config['templateName'],

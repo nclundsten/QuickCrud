@@ -35,7 +35,7 @@ class ConcreteCrudHandler extends AbstractCrudHandler
     {
         return [
             'entityName' => $this->entityName,
-            'routePrefix' => $this->routePrefix,
+            'routes' => $this->routes,
             'templateName' => $this->templateName,
         ];
     }

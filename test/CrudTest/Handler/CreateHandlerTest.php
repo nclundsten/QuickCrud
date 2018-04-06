@@ -40,9 +40,11 @@ class CreateHandlerTest extends TestCase
         $this->mockForm = $this->prophesize(FormInterface::class);
         $this->config = [
             'entityName' => "\\StdClass",
-            'routePrefix' => uniqid('routeprefix'),
             'templateName' => uniqid('some::template'),
             'form' => $this->mockForm,
+            'routes' => [
+                'success' => uniqid('success.route'),
+            ]
         ];
         $this->requestAttributes[CrudRouteMiddleware::CRUD_CONFIG] = $this->config;
         $this->mockRequest->getMethod()->willReturn('POST');
@@ -116,7 +118,7 @@ class CreateHandlerTest extends TestCase
     {
         $this->mockRequest->getMethod()->willReturn('POST');
         $this->mockRequest->getParsedBody()->willReturn([]);
-        $this->mockRouter->generateUri($this->config['routePrefix'] . '.list')->willReturn(uniqid('uri'));
+        $this->mockRouter->generateUri($this->config['routes']['success'])->willReturn(uniqid('uri'));
 
         $this->mockForm->isValid()->willReturn(true)->shouldBeCalled();
         $entity = new \StdClass();

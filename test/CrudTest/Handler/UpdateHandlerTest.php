@@ -40,7 +40,9 @@ class UpdateHandlerTest extends TestCase
         $this->mockForm = $this->prophesize(FormInterface::class);
         $this->config = [
             'entityName' => "\\StdClass",
-            'routePrefix' => uniqid('routeprefix'),
+            'routes' => [
+                'success' => uniqid('success.route'),
+            ],
             'templateName' => uniqid('some::template'),
             'form' => $this->mockForm,
         ];
@@ -116,7 +118,7 @@ class UpdateHandlerTest extends TestCase
     {
         $this->mockRequest->getMethod()->willReturn('POST');
         $this->mockRequest->getParsedBody()->willReturn([]);
-        $this->mockRouter->generateUri($this->config['routePrefix'] . '.list')->willReturn(uniqid('uri'));
+        $this->mockRouter->generateUri($this->config['routes']['success'])->willReturn(uniqid('uri'));
 
         $this->mockForm->isValid()->willReturn(true)->shouldBeCalled();
         $entity = new \StdClass();

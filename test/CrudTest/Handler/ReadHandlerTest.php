@@ -40,7 +40,6 @@ class ReadHandlerTest extends TestCase
 
         $this->config = [
             'entityName' => "\\StdClass",
-            'routePrefix' => uniqid('routeprefix'),
             'templateName' => uniqid('some::template'),
         ];
         $this->requestAttributes[CrudRouteMiddleware::CRUD_CONFIG] = $this->config;

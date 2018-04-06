@@ -40,8 +40,10 @@ class DeleteHandlerTest extends TestCase
         $this->mockForm = $this->prophesize(FormInterface::class);
         $this->config = [
             'entityName' => "\\StdClass",
-            'routePrefix' => uniqid('routeprefix'),
             'templateName' => uniqid('some::template'),
+            'routes' => [
+                'success' => uniqid('success.route'),
+            ],
             'form' => $this->mockForm,
         ];
         $this->requestAttributes[CrudRouteMiddleware::CRUD_CONFIG] = $this->config;
@@ -116,7 +118,7 @@ class DeleteHandlerTest extends TestCase
     {
         $this->mockRequest->getMethod()->willReturn('POST');
         $this->mockRequest->getParsedBody()->willReturn([]);
-        $this->mockRouter->generateUri($this->config['routePrefix'] . '.list')->willReturn(uniqid('uri'));
+        $this->mockRouter->generateUri($this->config['routes']['success'])->willReturn(uniqid('uri'));
 
         $this->mockForm->isValid()->willReturn(true)->shouldBeCalled();
         $entity = new \StdClass();

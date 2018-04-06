@@ -35,7 +35,6 @@ class AbstractCrudWriteHandlerTest extends TestCase
 
         $this->config = [
             'entityName' => uniqid('EntityName'),
-            'routePrefix' => uniqid('routeprefix'),
             'templateName' => uniqid('some::template'),
             'identifier' => ['id1' => 'id1', 'id2' => 'id2'],
             'form' => $this->form,
