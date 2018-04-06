@@ -24,10 +24,10 @@ class ListHandler extends AbstractCrudHandler
 
         $data = [
             'entities' => $entities,
-            'editRoute' => $this->routePrefix . '.update',
-            'readRoute' => $this->routePrefix . '.read',
-            'newUrl' => $this->router->generateUri($this->routePrefix . '.create'),
-            'deleteRoute' => $this->routePrefix . '.delete',
+            'editRoute' => $this->routes['update'],
+            'readRoute' => $this->routes['read'],
+            'newUrl' => $this->router->generateUri($this->routes['create']),
+            'deleteRoute' => $this->routes['delete'],
             'limit' => $limit,
             'page' => $page,
             'offset' => $offset,
