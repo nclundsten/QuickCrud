@@ -3,12 +3,13 @@
 namespace Crud\Handler;
 
 use Zend\Diactoros\Response\HtmlResponse;
+use Psr\Http\Message\ResponseInterface;
 
 class ListHandler extends AbstractCrudHandler
 {
     protected $templateName = "crud::list";
 
-    public function handleGet() : HtmlResponse
+    public function handleGet() : ResponseInterface
     {
         $params = $this->request->getQueryParams();
         $limit = isset($params['limit']) ? $params['limit'] : 10;
