@@ -41,7 +41,7 @@ class DeleteHandler extends AbstractCrudWriteHandler
         if ($form->isValid()) {
             $this->entityManager->remove($form->getData());
             $this->entityManager->flush();
-            return new RedirectResponse($this->router->generateUri($this->routePrefix . '.list'));
+            return new RedirectResponse($this->router->generateUri($this->successRoute));
         }
 
         return new HtmlResponse(
