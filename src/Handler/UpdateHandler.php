@@ -7,7 +7,7 @@ use Zend\Diactoros\Response\RedirectResponse;
 use Zend\Diactoros\Response\EmptyResponse;
 use Psr\Http\Message\ResponseInterface;
 
-class UpdateAction extends AbstractCrudWriteHandler
+class UpdateHandler extends AbstractCrudWriteHandler
 {
     protected $templateName = "crud::update";
 
@@ -15,13 +15,13 @@ class UpdateAction extends AbstractCrudWriteHandler
      * @return HtmlResponse
      * @throws \Exception
      */
-    protected function handleGet() : HtmlResponse
+    protected function handleGet() : ResponseInterface
     {
         return new HtmlResponse(
             $this->templateRenderer->render(
                 $this->templateName,
                 [
-                    'form' => self::getForm()
+                    'form' => $this->getForm()
                 ]
             )
         );
@@ -33,11 +33,11 @@ class UpdateAction extends AbstractCrudWriteHandler
      */
     protected function handlePost() : ResponseInterface
     {
-        if (! static::validateCsrfToken()) {
+        if (! $this->validateCsrfToken()) {
             return new EmptyResponse();
         }
 
-        $form = self::getForm(null, $this->request->getParsedBody());
+        $form = $this->getForm(null, $this->request->getParsedBody());
         if ($form->isValid()) {
             $this->entityManager->persist($form->getData());
             $this->entityManager->flush();

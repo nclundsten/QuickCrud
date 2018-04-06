@@ -9,8 +9,9 @@ use Zend\Form\FormInterface;
 use Zend\Form\Element;
 use Psr\Http\Message\ResponseInterface;
 
-class AbstractCrudWriteHandler extends AbstractCrudHandler
+abstract class AbstractCrudWriteHandler extends AbstractCrudHandler
 {
+    /* @var FormInterface */
     private $form;
 
     /**
@@ -26,7 +27,7 @@ class AbstractCrudWriteHandler extends AbstractCrudHandler
         return parent::handle($request);
     }
 
-    protected function handlePost(){}
+    abstract protected function handlePost() : ResponseInterface;
 
     protected function init(ServerRequestInterface $request)
     {
@@ -36,21 +37,39 @@ class AbstractCrudWriteHandler extends AbstractCrudHandler
     }
 
     /**
-     * @param object|null $entity
+     * @param null $entity
+     * @param array|null $data
      * @param string $action
      * @param string $method
-     * @return mixed
+     * @return FormInterface
      * @throws \Exception
      */
-    protected function getForm($entity = null, array $data = null, $action='', $method="POST")
-    {
+    protected function getForm(
+        $entity = null,
+        array $data = null,
+        string $action='',
+        string $method="POST"
+    ) : FormInterface {
         $form = $this->form;
         if (null === $entity) {
             $entity = self::findEntityFromRequest();
         }
 
         $form->bind($entity);
-        static::decorateFormWithCsrf($form, self::generateCsrfToken(), $action, $method);
+
+        $form->setAttribute('action', $action);
+        $form->setAttribute('method', $method);
+
+        //CSRF Element
+        $form->add($csrf = new Element\Hidden('__csrf'));
+        $csrf->setValue(
+            $this->request->getAttribute(CsrfMiddleware::GUARD_ATTRIBUTE)
+                ->generateToken()
+        );
+
+        //Submit
+        $form->add($submit = new Element\Submit('submit'));
+        $submit->setValue('Submit');
 
         if (is_array($data)) {
             $form->setData($data);
@@ -59,24 +78,10 @@ class AbstractCrudWriteHandler extends AbstractCrudHandler
         return $form;
     }
 
-    public static function decorateFormWithCsrf(FormInterface $form, $csrfToken, $action='', $method="POST")
-    {
-        $form->setAttribute('method', $method);
-        $form->setAttribute('action', $action);
-
-        //CSRF Element
-        $form->add($csrf = new Element\Hidden('__csrf'));
-        $csrf->setValue($csrfToken);
-
-        //Submit
-        $form->add($submit = new Element\Submit('submit'));
-        $submit->setValue('Submit');
-    }
-
     /**
      * @return bool
      */
-    public function validateCsrfToken()
+    protected function validateCsrfToken()
     {
         $guard = $this->request->getAttribute(CsrfMiddleware::GUARD_ATTRIBUTE);
         $data = $this->request->getParsedBody();
@@ -85,10 +90,5 @@ class AbstractCrudWriteHandler extends AbstractCrudHandler
             return false;
         }
         return true;
-    }
-
-    public function generateCsrfToken()
-    {
-        return $this->request->getAttribute(CsrfMiddleware::GUARD_ATTRIBUTE)->generateToken();
     }
 }

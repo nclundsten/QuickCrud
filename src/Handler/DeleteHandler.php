@@ -7,7 +7,7 @@ use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\RedirectResponse;
 use Zend\Diactoros\Response\EmptyResponse;
 
-class DeleteAction extends AbstractCrudWriteHandler
+class DeleteHandler extends AbstractCrudWriteHandler
 {
     protected $templateName = "crud::delete";
 
@@ -21,7 +21,7 @@ class DeleteAction extends AbstractCrudWriteHandler
             $this->templateRenderer->render(
                 $this->templateName,
                 [
-                    'form' => self::getForm(),
+                    'form' => $this->getForm(),
                 ]
             )
         );
@@ -33,11 +33,11 @@ class DeleteAction extends AbstractCrudWriteHandler
      */
     protected function handlePost() : ResponseInterface
     {
-        if (! self::validateCsrfToken()) {
+        if (! $this->validateCsrfToken()) {
             return new EmptyResponse();
         }
 
-        $form = self::getForm();
+        $form = $this->getForm();
         if ($form->isValid()) {
             $this->entityManager->remove($form->getData());
             $this->entityManager->flush();

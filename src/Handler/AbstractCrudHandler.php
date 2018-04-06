@@ -6,6 +6,7 @@ use Crud\Middleware\CrudRouteMiddleware;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Zend\Diactoros\Response\EmptyResponse;
 use Zend\Expressive\Router\RouterInterface;
 use Zend\Expressive\Template\TemplateRendererInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -31,7 +32,7 @@ abstract class AbstractCrudHandler implements RequestHandlerInterface
     protected $templateName;
 
     /* @var array */
-    protected $identifier;
+    private $identifier;
 
     /* @var ServerRequestInterface */
     protected $request;
@@ -57,9 +58,10 @@ abstract class AbstractCrudHandler implements RequestHandlerInterface
         if ($request->getMethod() === 'GET') {
             return $this->handleGet();
         }
+        return new EmptyResponse();
     }
 
-    protected function handleGet(){}
+    abstract protected function handleGet() : ResponseInterface;
 
     /**
      * @param ServerRequestInterface $request
@@ -96,7 +98,7 @@ abstract class AbstractCrudHandler implements RequestHandlerInterface
 
     /**
      * @param ServerRequestInterface $request
-     * @return array
+     * @return array - array of key value pairs that represent the id of an entity (allows for compound keys)
      * @throws \Exception
      */
     protected function idFromRequest() : array

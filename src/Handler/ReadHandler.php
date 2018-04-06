@@ -2,9 +2,10 @@
 
 namespace Crud\Handler;
 
+use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response\HtmlResponse;
 
-class ReadAction extends AbstractCrudHandler
+class ReadHandler extends AbstractCrudHandler
 {
     protected $templateName = "crud::read";
 
@@ -12,13 +13,13 @@ class ReadAction extends AbstractCrudHandler
      * @return HtmlResponse
      * @throws \Exception
      */
-    public function handleGet() : HtmlResponse
+    public function handleGet() : ResponseInterface
     {
         return new HtmlResponse(
             $this->templateRenderer->render(
                 $this->templateName,
                 [
-                    'entity' => self::findEntityFromRequest(),
+                    'entity' => $this->findEntityFromRequest(),
                 ]
             )
         );

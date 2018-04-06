@@ -4,7 +4,7 @@ namespace Crud\Handler;
 
 use Zend\Diactoros\Response\HtmlResponse;
 
-class ListAction extends AbstractCrudHandler
+class ListHandler extends AbstractCrudHandler
 {
     protected $templateName = "crud::list";
 

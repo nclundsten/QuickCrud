@@ -38,11 +38,11 @@ class ConfigProvider
     {
         return [
             'factories'  => [
-                Handler\ListAction::class => Handler\ListActionFactory::class,
-                Handler\ReadAction::class => Handler\ReadActionFactory::class,
-                Handler\CreateAction::class => Handler\CreateActionFactory::class,
-                Handler\UpdateAction::class => Handler\UpdateActionFactory::class,
-                Handler\DeleteAction::class => Handler\DeleteActionFactory::class,
+                Handler\ListHandler::class => Handler\ListHandlerFactory::class,
+                Handler\ReadHandler::class => Handler\ReadHandlerFactory::class,
+                Handler\CreateHandler::class => Handler\CreateHandlerFactory::class,
+                Handler\UpdateHandler::class => Handler\UpdateHandlerFactory::class,
+                Handler\DeleteHandler::class => Handler\DeleteHandlerFactory::class,
 
                 'doctrine.entity_manager.orm_default' => EntityManagerFactory::class,
 
