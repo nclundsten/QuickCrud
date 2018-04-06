@@ -21,7 +21,7 @@ class CreateHandler extends AbstractCrudWriteHandler
             $this->templateRenderer->render(
                 $this->templateName,
                 [
-                    'form' => $this->getForm(),
+                    'form' => $this->getForm(new $this->entityName),
                 ]
             )
         );
